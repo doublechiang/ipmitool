@@ -12,3 +12,13 @@ script:
  - ./configure --enable-intf-dummy
  - make
  - sudo make install
+ - os: windows
+      before_install:
+        - choco uninstall -y mingw
+        - choco upgrade --no-progress -y cygwin
+        - ls -l /c/
+        - setup-x86.exe -q -P wget -P gcc-g++ -P make -P diffutils -P libmpfr-devel -P libgmp-devel -P libmpc-devel -P openssl-devel -P automake -P autoconf -P libtool -P libreadline-devel
+      script:
+        - ./configure --enable-intf-lanplus
+        - make
+
