@@ -30,6 +30,8 @@ matrix:
         - sudo make install
     - os: osx
       osx_image: xcode10.2
+      before_install:
+        - xcode-select --install
       script:
         - ./configure --enable-intf-dummy
         - make
@@ -39,7 +41,7 @@ matrix:
         - choco uninstall -y mingw
         - choco upgrade --no-progress -y cygwin
         - ls -l /c/
-        - setup-x86.exe -q -P wget -P gcc-g++ -P make -P diffutils -P libmpfr-devel -P libgmp-devel -P libmpc-devel -P openssl-devel -P autoconf2.5 -P automake1.9 -P libtool -P libreadline-devel
+        - setup-x86_64.exe -q -P wget -P gcc-g++ -P make -P diffutils -P libmpfr-devel -P libgmp-devel -P libmpc-devel -P openssl-devel -P autoconf -P automake -P libtool -P libreadline-devel
       script:
         - ./configure --enable-intf-lanplus
         - make
