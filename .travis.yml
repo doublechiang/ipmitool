@@ -41,7 +41,7 @@ matrix:
       - ls -l /c/
       - setup-x86.exe -q -W --disable-buggy-antivirus --verbose --packages="bash,p7zip,libssl-devel,git,gcc-core,make,diff,autoconf,automake,m4,libtool,libncurses-devel,libreadline-devel"
       # setup-86 will return immediately
-      - sleep 900
+      - sleep 500
 
       script:
         - ./configure --enable-intf-lanplus
