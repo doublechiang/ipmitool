@@ -40,6 +40,7 @@ matrix:
       - choco upgrade --no-progress -y cygwin
       - ls -l /c/
       - setup-x86.exe -q --disable-buggy-antivirus --verbose --packages="bash,p7zip,libssl-devel,git,gcc-core,make,diff,autoconf,automake,m4,libtool,libncurses-devel,libreadline-devel"
+      - setup-x86.exe -q --disable-buggy-antivirus --verbose --packages="autoconf,automake,libtool,libreadline-devel"
 
       script:
         - ./configure --enable-intf-lanplus
