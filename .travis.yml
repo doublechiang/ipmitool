@@ -54,6 +54,6 @@ matrix:
         - autoreconf -vfi        
       script:
         - ./configure --enable-intf-lanplus
-        - SHELL=/usr/bin/sh make
-      
+        - make SHELL='/usr/bin/sh'
+       
 
