@@ -39,7 +39,7 @@ matrix:
         - choco install -r --no-progress -y msys2 make
         - PATH=$PATH:/c/tools/msys64/usr/bin/
         # Calling pacman via a powershell script
-        - powershell -executionpolicy bypass "pacman -Syu --noconfirm autoconf libtool automake make autoconf-archive pkg-config"
+        - powershell -executionpolicy bypass "pacman -Syu --noconfirm autoconf libtool automake make autoconf-archive pkg-config mingw-w64-x86_64-toolchain"
         # Fix the environment for autotools to actually work
         - ln -s /c/tools/msys64/usr/share/autoconf* /usr/share/
         - ln -s /c/tools/msys64/usr/share/automake* /usr/share/
