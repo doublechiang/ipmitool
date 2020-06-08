@@ -36,8 +36,36 @@ matrix:
         - sudo make install
     - os: windows
       before_install:
-        - choco install cygwin
-        - C:\\tools\\cygwin\\cygwinsetup.exe -q -P make,unzip,automake,autoconf,zip
+        - [[ ! -f C:/tools/msys64/msys2_shell.cmd ]] && rm -rf C:/tools/msys64
+        - choco uninstall -y mingw
+        - choco upgrade --no-progress -y msys2
+        - choco install -r --no-progress -y msys2 make
+        - PATH=$PATH:/c/tools/msys64/usr/bin/
+
+        # Calling pacman via a powershell script
+        - powershell -executionpolicy bypass "pacman -Syu --noconfirm autoconf libtool automake make autoconf-archive pkg-config"
+
+        # Fix the environment for autotools to actually work
+        - ln -s /c/tools/msys64/usr/share/autoconf* /usr/share/
+        - ln -s /c/tools/msys64/usr/share/automake* /usr/share/
+        - ln -s /c/tools/msys64/usr/share/aclocal* /usr/share/
+        - ln -s /c/tools/msys64/usr/share/libtool* /usr/share/
+        - ln -s /c/tools/msys64/usr/share/pkgconfig /usr/share/
+        - ln -s /c/tools/msys64/usr/bin/autom4te /usr/bin/
+        - ln -s /c/tools/msys64/usr/bin/autoconf /usr/bin/
+        - ln -s /c/tools/msys64/usr/bin/autoheader /usr/bin/
+        - ln -s /c/tools/msys64/usr/bin/m4 /usr/bin/
+
+        - PATH=$PATH:/c/tools/msys64/usr/bin/
+        - export CONFIG_SHELL=/usr/bin/bash.exe
+
+        - autoreconf -vfi        
+
+        ## Install more MSYS2 packages from https://packages.msys2.org/base here
+        - export PATH=/C/tools/msys64/mingw64/bin:$PATH
+        - export MAKE=mingw32-make  # so that Autotools can find it
+        - autoreconf --force --install
+
       script:
         - ./configure --enable-intf-lanplus
         - make
