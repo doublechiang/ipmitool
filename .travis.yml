@@ -57,7 +57,7 @@ matrix:
         - ln -s /c/tools/msys64/usr/bin/autoheader /usr/bin/
         - ln -s /c/tools/msys64/usr/bin/m4 /usr/bin/
 
-        - e export PATH=/C/tools/msys64/mingw64/bin:$PATH
+        - export PATH=/C/tools/msys64/mingw64/bin:$PATH
         - export MAKE=mingw32-make  # so that Autotools can find it
 
       script:
