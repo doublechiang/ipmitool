@@ -61,10 +61,6 @@ matrix:
 
         - autoreconf -vfi        
 
-        ## Install more MSYS2 packages from https://packages.msys2.org/base here
-        - export PATH=/C/tools/msys64/mingw64/bin:$PATH
-        - export MAKE=mingw32-make  # so that Autotools can find it
-        - autoreconf --force --install
 
       script:
         - ./configure --enable-intf-lanplus
