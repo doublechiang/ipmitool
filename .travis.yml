@@ -19,18 +19,21 @@ matrix:
           packages:
             - libsystemd-dev
       script:
+        - ./bootstrap
         - ./configure --enable-intf-dummy --enable-intf-dbus
         - make
         - sudo make install
     - os: linux
       dist: trusty
       script:
+        - ./bootstrap
         - ./configure --enable-intf-dummy
         - make
         - sudo make install
     - os: osx
       osx_image: xcode10.3  
       script:
+        - ./bootstrap
         - ./configure --enable-intf-dummy
         - make
         - sudo make install
@@ -59,8 +62,10 @@ matrix:
 
         - export PATH=/C/tools/msys64/mingw64/bin:$PATH
         - export MAKE=mingw32-make  # so that Autotools can find it
+        - $mingw64 ./bootstrap
+
 
       script:
-        - ./configure --enable-intf-lanplus
-        - make
+        - $mingw64 ./configure --enable-intf-lanplus
+        - $mingw64 make
       
