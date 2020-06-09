@@ -2,6 +2,40 @@ language: C
 sudo: enabled
 before_script:
   - ./bootstrap
+before_install:
+- |-
+    case $TRAVIS_OS_NAME in
+      windows)
+        [[ ! -f C:/tools/msys64/msys2_shell.cmd ]] && rm -rf C:/tools/msys64
+        choco uninstall -y mingw
+        choco upgrade --no-progress -y msys2
+        export msys2='cmd //C RefreshEnv.cmd '
+        export msys2+='& set MSYS=winsymlinks:nativestrict '
+        export msys2+='& C:\\tools\\msys64\\msys2_shell.cmd -defterm -no-start'
+        export mingw64="$msys2 -mingw64 -full-path -here -c "\"\$@"\" --"
+        export msys2+=" -msys2 -c "\"\$@"\" --"
+        $msys2 pacman --sync --noconfirm --needed mingw-w64-x86_64-toolchain
+        ## Install more MSYS2 packages from https://packages.msys2.org/base here
+        taskkill //IM gpg-agent.exe //F  # https://travis-ci.community/t/4967
+        export PATH=/C/tools/msys64/mingw64/bin:$PATH
+        export MAKE=mingw32-make  # so that Autotools can find it
+        ;;
+    esac
+
+before_cache:
+- |-
+    case $TRAVIS_OS_NAME in
+      windows)
+        # https://unix.stackexchange.com/a/137322/107554
+        $msys2 pacman --sync --clean --noconfirm
+        ;;
+    esac
+
+cache:
+    directories:
+    - $HOME/AppData/Local/Temp/chocolatey
+    - /C/tools/msys64
+
 addons:
   apt:
     update: true
@@ -35,23 +69,6 @@ matrix:
         - make
         - sudo make install
     - os: windows
-      before_install:
-        - choco install -r --no-progress -y msys2 make
-        # Calling pacman via a powershell script
-        - PATH=$PATH:/c/tools/msys64/usr/bin/
-        - powershell -executionpolicy bypass "pacman -Syu --noconfirm autoconf libtool automake make autoconf-archive pkg-config mingw-w64-x86_64-toolchain"
-        # Fix the environment for autotools to actually work
-        - ln -s /c/tools/msys64/usr/share/autoconf* /usr/share/
-        - ln -s /c/tools/msys64/usr/share/automake* /usr/share/
-        - ln -s /c/tools/msys64/usr/share/aclocal* /usr/share/
-        - ln -s /c/tools/msys64/usr/share/libtool* /usr/share/
-        - ln -s /c/tools/msys64/usr/share/pkgconfig /usr/share/
-        - ln -s /c/tools/msys64/usr/bin/autom4te /usr/bin/
-        - ln -s /c/tools/msys64/usr/bin/autoconf /usr/bin/
-        - ln -s /c/tools/msys64/usr/bin/autoheader /usr/bin/
-        - ln -s /c/tools/msys64/usr/bin/m4 /usr/bin/
-        - export CONFIG_SHELL=/usr/bin/bash.exe
-        - autoreconf -vfi        
       script:
         - ./configure CONFIG_SHELL=/usr/bin/sh
         - make SHELL='/usr/bin/sh'
