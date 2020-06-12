@@ -29,13 +29,11 @@ before_install:
                 automake \
                 mingw-w64-x86_64-libtool \
                 mingw-w64-x86_64-toolchain \
+                make \
                 unzip
         taskkill //IM gpg-agent.exe //F
         export CPPFLAGS=-D__USE_MINGW_ANSI_STDIO=1
         export PATH=/C/tools/msys64/mingw64/bin:$PATH
-        export MAKE=mingw32-make
-        export AR=gcc-ar
-        export RANLIB=gcc-ranlib
     esac
 
 before_cache:
