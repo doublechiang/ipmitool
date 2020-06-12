@@ -3,40 +3,18 @@ sudo: enabled
 before_script:
   - $shell ./bootstrap
 
-before_cache:
-- |-
-    case $TRAVIS_OS_NAME in
-      windows)
-        $msys2 pacman --sync --clean --noconfirm
-        echo --tcp-nodelay >> $APPDATA/.curlrc
-        ;;
-    esac
-
 before_install:
 - |-
     case $TRAVIS_OS_NAME in
+    windows)
         - choco uninstall -y mingw
         - choco upgrade --no-progress -y cygwin
         - setup-x86.exe -q --upgrade-also --wait --arch="x86_64" --root="c:\tools\cygwin" --packages="wget,bash,p7zip,libssl-devel,git,gcc-core,make,diffutils,autoconf,automake,m4,libtool,libncurses-devel,libreadline-devel" --verbose --no-admin
         - ls -R /c/tools/cygwin
-        - export PATH=$PATH:/c/tools/cygwin/bin:/c/tools/cygwin/usr/bin
-        - export shell="mintty.exe "" 
+        - export PATH=/c/tools/cygwin/bin:/c/tools/cygwin/usr/bin:$PATH
+        - export shell="mintty.exe --dir . " 
         ;;
     esac
-
-before_cache:
-- |-
-    case $TRAVIS_OS_NAME in
-      windows)
-        # https://unix.stackexchange.com/a/137322/107554
-        $msys2 pacman --sync --clean --noconfirm
-        ;;
-    esac
-
-cache:
-    directories:
-    - $HOME/AppData/Local/Temp/chocolatey
-    - /C/tools/msys64
 
 addons:
   apt:
@@ -73,6 +51,6 @@ matrix:
     - os: windows
       script:
         - $shell ./configure
-        - $shell make
+        - make
        
 
