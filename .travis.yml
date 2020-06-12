@@ -85,6 +85,6 @@ matrix:
     - os: windows
       script:
         - $shell ./configure
-        - $shell make
+        - $msys2 make
        
 
