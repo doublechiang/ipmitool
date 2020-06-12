@@ -36,7 +36,11 @@ before_install:
         export MAKE=mingw32-make
         export AR=gcc-ar
         export RANLIB=gcc-ranlib
-        autoreconf -vfi
+        for i in {1..1200}
+        do
+            printf "."; sleep 1;
+        done
+        echo ""
         ;;
     esac
 
