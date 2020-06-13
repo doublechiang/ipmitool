@@ -9,7 +9,7 @@ before_install:
       windows)
         choco uninstall -y mingw
         choco upgrade --no-progress -y cygwin
-        setup-x86.exe -q --upgrade-also --wait --arch="x86_64" --root="c:\tools\cygwin" --packages="wget,bash,p7zip,libssl-devel,git,gcc-core,make,diffutils,autoconf,automake,m4,libtool,libncurses-devel,libreadline-devel" --verbose --no-admin
+        setup-x86.exe -q --upgrade-also --wait --arch="x86_64" --root="c:\tools\cygwin" --packages="wget,bash,p7zip,libssl-devel,git,gcc-core,make,diffutils,autoconf,automake,m4,libtool,libncurses-devel,libreadline-devel" --no-admin
         PATH=/usr/local/bin:/usr/bin:%PATH%
         export shell='c:\tools\cygwin\bin\mintty.exe --dir . ' 
         ;;
