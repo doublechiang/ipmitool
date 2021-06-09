@@ -1,0 +1,3 @@
+[submodule "openipmi-code"]
+	path = openipmi-code
+	url = https://git.code.sf.net/p/openipmi/code
